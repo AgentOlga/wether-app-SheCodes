@@ -1,0 +1,26 @@
+body {
+  background: #f9f7fe;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 600px;
+  margin: 30px auto;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 30px 50px rgba(65, 50, 100, 0.1);
+}
+
+header input,
+header button {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.temp {
+  font-size: 48px;
+  font-weight: bold;
+}
