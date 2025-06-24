@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles.css";
+import Weather from "./Weather";
 
 export default function App() {
   const [city, setCity] = useState("Copenhagen");
   const [weather, setWeather] = useState(null);
+  const [forecast, setForecast] = useState([]);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -13,16 +15,28 @@ export default function App() {
   }
 
   useEffect(() => {
-    const apiKey = "85bbd3d16a2dfe0ecf253c7ae1e8fe03"; 
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
-    axios.get(apiUrl).then((response) => {
+    axios.get(weatherUrl).then((response) => {
+      console.log("API KEY:", apiKey);
+
+    const data = response.data;
       setWeather({
-        name: response.data.name,
-        temp: Math.round(response.data.main.temp),
-        description: response.data.weather[0].description,
-        humidity: response.data.main.humidity,
-        wind: response.data.wind.speed,
+        city: data.name,
+        temp: Math.round(data.main.temp),
+        description: data.weather[0].description,
+        humidity: data.main.humidity,
+        wind: data.wind.speed,
+        icon: data.weather[0].icon,
+      });
+
+ 
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+      axios.get(forecastUrl).then((forecastResponse) => {
+        const filtered = forecastResponse.data.list.filter((item, index) => index % 8 === 0);
+        setForecast(filtered);
       });
     });
   }, [city]);
@@ -35,7 +49,7 @@ export default function App() {
           <input
             type="text"
             name="city"
-            placeholder="Enter a city.."
+            placeholder="Enter a city..."
             required
           />
           <button type="submit">Search</button>
@@ -44,13 +58,7 @@ export default function App() {
 
       {weather && (
         <main>
-          <h2>{weather.name}</h2>
-          <p>{weather.description}</p>
-          <p>
-            <strong>Humidity:</strong> {weather.humidity}% •{" "}
-            <strong>Wind:</strong> {weather.wind} km/h
-          </p>
-          <div className="temp">{weather.temp}°C</div>
+          <Weather data={weather} forecast={forecast} />
         </main>
       )}
 

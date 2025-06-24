@@ -24,3 +24,23 @@ header button {
   font-size: 48px;
   font-weight: bold;
 }
+.ForecastGrid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: nowrap;         
+  overflow-x: auto;         
+  padding-bottom: 10px;
+}
+
+.ForecastDay {
+  min-width: 100px;          
+  flex-shrink: 0;           
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  background: #f8f8ff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
